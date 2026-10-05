@@ -321,23 +321,15 @@ const P_=(t,n)=>{let p=null;try{p=NEPTUN.predict(t,n)}catch(e){}
       if(dt>0&&dt<0.1){const v=hav(p0,p1)/dt,el=(n-p1.ts)/3600000;
         if(v>20&&v<1000&&el>=0&&el<0.03){const b=brg(p0,p1),q=dest(p1.lat,p1.lon,b,v*el);return{lat:q[0],lon:q[1],heading:b,flying:true}}}}}
   return p};
-let lastAny=0,lastWs=0,pend=0,ws=null,wsT=0,wsD=1000;const thr=new Map(),tmo=t=>Date.parse(t&&t.updatedAt)||0;
+let lastAny=0,lastSdk=0,pend=0;const thr=new Map(),tmo=t=>Date.parse(t&&t.updatedAt)||0;
 function emit(){if(!pend)pend=setTimeout(()=>{pend=0;onSnap({threats:[...thr.values()].map(v=>v.t)})},120)}
 function setAll(list,hard){const ids=new Set();for(const t of list){if(t.id==null)continue;ids.add(t.id);const c=thr.get(t.id);if(!c||tmo(t)>=tmo(c.t))thr.set(t.id,{t,w:c?c.w:0})}
   for(const [id,v] of thr)if(!ids.has(id)&&(hard||Date.now()-v.w>20000))thr.delete(id);emit()}
 let lastRest=0;
-async function rest(){if(document.hidden)return;if(Date.now()-lastWs<25000&&Date.now()-lastRest<30000)return;lastRest=Date.now();try{const r=await fetch(NEPTUN_BASE+"/api/v1/threats",{cache:"no-store"});if(!r.ok)return;const j=await r.json();if(Array.isArray(j.threats))setAll(j.threats,false)}catch(e){}}
-function openWs(){try{ws=new WebSocket("wss://neptun.in.ua/api/v1/stream")}catch(e){return}
-  ws.onopen=()=>{wsD=1000};
-  ws.onmessage=e=>{let v;try{v=JSON.parse(e.data)}catch(_){return}const d=v.data;lastWs=Date.now();
-    if(v.type==="snapshot"&&d&&Array.isArray(d.threats))setAll(d.threats,true);
-    else if(v.type==="upsert"&&d&&d.id!=null){thr.set(d.id,{t:d,w:Date.now()});emit()}
-    else if(v.type==="remove"&&d){thr.delete(d.id);emit()}
-    else if(v.type==="alerts"&&d&&(d.raions||d.oblasts))applyNeptunAlerts(d.raions||[],d.oblasts||[])};
-  ws.onclose=()=>{clearTimeout(wsT);wsT=setTimeout(openWs,wsD=Math.min(wsD*2,30000))};ws.onerror=()=>{try{ws.close()}catch(_){}}}
-function hub(){rest();setInterval(rest,6000);openWs();document.addEventListener("visibilitychange",()=>{if(!document.hidden)rest()})}
+async function rest(){if(document.hidden||Date.now()-lastSdk<15000)return;try{const r=await fetch(NEPTUN_BASE+"/api/v1/threats",{cache:"no-store"});if(!r.ok)return;const j=await r.json();if(Array.isArray(j.threats))setAll(j.threats,false)}catch(e){}}
+function hub(){setInterval(rest,6000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)rest()})}
 setInterval(()=>{const e_=document.getElementById("dage");if(!lastAny){e_.textContent="";return}const s=Math.round((Date.now()-lastAny)/1000);
-  e_.style.color=s>30?"#ffb020":"#7d8899";e_.textContent=s>30?"⚠ Дані загроз не оновлюються ("+s+" с)":"Оновлено "+s+" с тому · "+(Date.now()-lastWs<25000?"live":"REST")},1000);
+  e_.style.color=s>30?"#ffb020":"#7d8899";e_.textContent=s>30?"⚠ Дані загроз не оновлюються ("+s+" с)":"Оновлено "+s+" с тому · "+(Date.now()-lastSdk<15000?"live":"REST")},1000);
 // ---- Follow a target (tap a marker) ----
 const hav=(a,b)=>{const r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lon-a.lon)*r,h=Math.sin(dl/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)**2;return 12742*Math.asin(Math.sqrt(h))};
 function endFol(){fol=null;clearInterval(folT);const c=document.getElementById("card");if(c.textContent.includes("стежимо"))c.innerHTML=""}
@@ -387,7 +379,7 @@ try{
   if(typeof NEPTUN==="undefined")throw new Error("SDK не завантажено");
   dinfo.textContent="Підключення…";
   
-  hub();loop();
+  const client=new NEPTUN.RealtimeClient("https://neptun.in.ua");client.subscribe(snap=>{lastSdk=Date.now();onSnap(snap)});client.start();hub();loop();
 }catch(e){dinfo.textContent="Загрози: "+e.message}
 render();pollNeptunAlerts();setInterval(pollNeptunAlerts,10000);setInterval(poll,POLL_MS);
 </script></body></html>
