@@ -208,21 +208,128 @@ svg.ic,.zb svg,#bp svg,#cx svg,#pcl svg{fill:none;stroke:currentColor;stroke-wid
 
 html,body{overscroll-behavior:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #wrap,#wrap svg{touch-action:none}.o,.zb button,#sr button,#cardw button,#pn button{touch-action:manipulation}
-#bgt{position:fixed;right:12px;bottom:62px;z-index:45;max-width:min(260px,72vw);padding:7px 12px 7px 26px;border-radius:999px;background:rgba(26,31,39,.94);color:#e6edf7;font-size:12px;line-height:1.3;box-shadow:0 2px 10px rgba(0,0,0,.45);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
+#bgt{position:fixed;right:12px;top:max(12px,env(safe-area-inset-top));z-index:45;max-width:min(260px,72vw);padding:7px 12px 7px 26px;border-radius:999px;background:rgba(26,31,39,.94);color:#e6edf7;font-size:12px;line-height:1.3;box-shadow:0 2px 10px rgba(0,0,0,.45);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
 #bgt::before{content:"";position:absolute;left:10px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#ffb020;animation:bgp 1.1s ease-in-out infinite}
 #bgt.on{opacity:1;transform:none}@keyframes bgp{50%{opacity:.35}}
 .zfar .rz{stroke:none}.mv .o,.mv .rz{shape-rendering:optimizeSpeed}
 .lite .rz{stroke:none}.lite .o.alert{animation:none}.lite .o,.lite .rz,.lite .grid{vector-effect:none}
 .lite .o{stroke-width:calc(1px*var(--px))!important}.lite .o.sel{stroke-width:calc(2.4px*var(--px))!important}
+.o.warn:not(.alert){fill:#b88a12;stroke:#161a22}.rz.warn:not(.alert){fill:rgba(214,163,25,.74);stroke:#161a22;stroke-opacity:.6}
+.o.crit{fill:#b3202e;stroke:#161a22}.rz.crit{fill:rgba(217,38,52,.88);stroke:#161a22;stroke-opacity:.6}
+.sat .o.warn:not(.alert){fill:#e0a915;fill-opacity:var(--af,.55);stroke:#fff3c4}.sat .rz.warn:not(.alert){fill:#e0a915;fill-opacity:var(--af,.55);stroke:#fff3c4}
+.sat .o.crit{fill:#e03131;fill-opacity:calc(var(--af,.55) + .12);stroke:#ffd0d4}.sat .rz.crit{fill:#e03131;fill-opacity:calc(var(--af,.55) + .12);stroke:#ffd0d4}
+.lg{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 8px;font-size:12px}.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.msg{padding:7px 9px;margin:4px 0;border-radius:9px;background:rgba(255,255,255,.05);font-size:12px;line-height:1.4;word-break:break-word}.msg b{color:#9fb3cc;font-weight:600}.msg time{opacity:.55;margin-left:8px}
+
+/* ---- unified alert colours: official alert (red) > missile/ballistic/KAB (orange) > shahed/recon (yellow) ---- */
+:root{--l1:#c2a02a;--l2:#dd7a2e;--l3:#cf3a44}
+.o[data-l="1"],.rz[data-l="1"]{fill:var(--l1)}
+.o[data-l="2"],.rz[data-l="2"]{fill:var(--l2)}
+.o[data-l="3"],.rz[data-l="3"]{fill:var(--l3)}
+.o[data-l]{animation:none}
+.rz[data-l]{fill-opacity:1;stroke:#161a22;stroke-opacity:.5}
+.rg.hide .rz[data-l]{fill:none}
+.sat .o[data-l],.sat .rz[data-l]{fill-opacity:var(--af,.55)}
+.sat .o[data-l="1"],.sat .rz[data-l="1"]{fill:#f2c230}
+.sat .o[data-l="2"],.sat .rz[data-l="2"]{fill:#f08a24}
+.sat .o[data-l="3"],.sat .rz[data-l="3"]{fill:#ef3340}
+.sat .rz[data-l]{stroke:#fff;stroke-opacity:.35}
+.zfar .rz[data-l],.lite .rz[data-l]{stroke:none}
+#dinfo .tc svg{width:23px;height:27px;display:block;flex:none;fill:none;stroke:none}
+#dinfo .tc.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+#dinfo .tc.btn{cursor:pointer;border:0;font:inherit;font-size:13px;font-weight:600}
+#dinfo .tc.btn:hover{background:var(--chip2)}
+#dinfo .tc.on{background:var(--blue);color:#fff}
+#oc[aria-pressed=true]{color:var(--blue)}
+
+/* ===================== Simple UI v4 =====================
+   Plain controls like the very first version: white buttons, small dark chips, no panels.
+   Map, region colours and target icons are untouched. */
+:root{--ui-ink:#1a1f27;--ui-hover:#eef1f5;--ui-dark:rgba(14,18,25,.86);--sh:0 2px 10px rgba(0,0,0,.4)}
+/* top-left: search + status */
+#top{position:fixed;left:12px;right:64px;top:max(12px,env(safe-area-inset-top));max-width:420px;display:block;pointer-events:none;z-index:20}
+#top>*{pointer-events:auto}
+#sbw{position:relative;display:block;width:100%;flex:none}
+#sbw .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);display:grid;color:#7d8899;pointer-events:none}
+#sbw .si svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+#sb{display:block;width:100%;height:40px;padding:0 12px 0 38px;border:0;border-radius:10px;background:#fff;color:var(--ui-ink);font:400 16px var(--font);box-shadow:var(--sh)}
+#sb::placeholder{color:#7d8899}
+#sb:focus{background:#fff;outline:0;box-shadow:0 0 0 2px var(--blue),var(--sh)}
+#sr{position:absolute;left:0;right:0;top:calc(100% + 6px);bottom:auto;margin:0;max-height:50vh;overflow-y:auto;background:#fff;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.45)}
+#sr button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 12px;border:0;border-top:1px solid #eef1f5;border-radius:0;background:#fff;color:var(--ui-ink);font:500 14px var(--font);text-align:left}
+#sr button:first-child{border-top:0}
+#sr button:hover,#sr button:focus-visible{background:var(--ui-hover)}
+#sr small{margin:0;color:#7d8899;font-size:12px}
+#chip{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:auto;margin-top:8px;padding:0;background:none;border:0;box-shadow:none}
+#count{padding:5px 10px;border-radius:8px;background:var(--ui-dark);color:#fff;font:600 13px/1.3 var(--font)}
+#count::before{width:8px;height:8px}
+#dinfo{display:flex;flex-wrap:wrap;gap:6px}
+#dinfo .tc{gap:6px;padding:4px 9px;border-radius:8px;background:var(--ui-dark);color:#fff;font-size:12.5px}
+#dinfo .tc b{font-size:14px}
+#dinfo .tc small{font-size:11px}
+#dinfo .tc svg{width:18px;height:21px}
+#dinfo .tc.btn svg{width:15px;height:15px}
+#dinfo .tc.btn{font-size:12.5px}
+#dinfo .tc.btn:hover{background:#242b36}
+#dinfo .tc.on{background:var(--blue);color:#fff}
+#dage{padding:2px 8px;border-radius:8px;background:var(--ui-dark);font-size:11px;color:#9aa6b8}
+#top #ban{margin:8px 0 0!important;padding:10px 12px;border-radius:10px;font-size:14px}
+/* right: one plain column of white buttons */
+.zb{position:fixed!important;right:12px;left:auto;top:max(12px,env(safe-area-inset-top));bottom:auto;z-index:20;display:flex;flex-direction:column;gap:6px;max-height:calc(100% - 24px);padding:0;background:none;border:0;box-shadow:none;border-radius:0}
+.zb .gap{display:block;height:6px;flex:none}
+.zb button{width:40px;height:40px;flex:none;display:grid;place-items:center;padding:0;border:0;border-radius:10px;background:#fff!important;color:var(--ui-ink);box-shadow:var(--sh)}
+.zb button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.zb button:hover{background:var(--ui-hover)!important}
+.zb button:active{background:#dfe5ee!important}
+.zb button[aria-pressed=true],.zb button[aria-expanded=true]{background:var(--blue)!important;color:#fff}
+body:has(#cardw.on) .zb{display:flex}
+.zb #mn,.zb #flt{color:var(--ui-ink);opacity:1;background:#fff!important}
+.zb #mn:hover,.zb #flt:hover{background:var(--ui-hover)!important}
+.zb #mn[aria-expanded=true],.zb #flt[aria-pressed=true]{background:var(--blue)!important;color:#fff}
+@media(max-height:600px){.zb{gap:4px}.zb button{width:34px;height:34px}.zb button svg{width:18px;height:18px}.zb .gap{height:2px}#top{right:56px}}
+/* bottom-left: donate + credits, bottom-right: info */
+#don{position:fixed;left:12px;bottom:calc(40px + var(--sb));z-index:16;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 13px 0 11px;border-radius:16px;background:#ffd43b;color:#1a1500;font:600 13px var(--font);box-shadow:var(--sh)}
+#don:hover{background:#ffdd5c}
+#don svg{width:14px;height:14px;fill:#1a1500;stroke:none}
+@media(max-width:480px){#don span{display:inline}#don{padding:0 13px 0 11px}}
+#cr{position:fixed;left:12px;bottom:calc(22px + var(--sb));z-index:16;font-size:11px;color:rgba(230,237,247,.78);text-shadow:0 0 3px #000,0 0 2px #000}
+#cr:hover{color:#fff}
+#tat{position:fixed;left:12px;bottom:calc(8px + var(--sb));z-index:16;flex:none;padding:0;text-align:left;font-size:10.5px;color:rgba(230,237,247,.7);text-shadow:0 0 3px #000,0 0 2px #000;pointer-events:none}
+#ib{position:fixed;right:12px;bottom:calc(12px + var(--sb));z-index:21;width:36px;height:36px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:#fff;color:var(--ui-ink);box-shadow:var(--sh)}
+#ib:hover{background:var(--ui-hover)}
+#ib svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+#info{left:auto;right:12px;transform:none;bottom:calc(56px + var(--sb));width:min(340px,calc(100% - 24px));padding:12px 14px;background:rgba(14,18,25,.97);border:0;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:12px;line-height:1.5;color:#b9c3d1}
+#info h4{margin:0 0 6px;font-size:14px;color:#fff}
+/* card, follow strip, toasts */
+#cardw{bottom:calc(52px + var(--sb));width:min(460px,calc(100% - 24px));padding:12px 14px;background:rgba(16,20,28,.96);border:1px solid #2c3544;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+#cardw:has(.fl){width:auto;padding:6px 8px 6px 14px}
+#card .ch{font-size:16px}
+#st{border-radius:8px;font-size:13px}
+#card .ca button,.fl button{padding:7px 12px;border-radius:8px}
+#toast{bottom:calc(64px + var(--sb));padding:8px 14px;background:#1a1f27;border:0;border-radius:10px;font-size:13px;font-weight:400;box-shadow:var(--sh)}
+#bgt{top:auto;right:12px;bottom:calc(56px + var(--sb))}
+/* side list: plain dark column */
+#pn{background:#141922;box-shadow:-6px 0 24px rgba(0,0,0,.5);border-left:1px solid #232b38}
+#pn .ph{background:#141922;font-size:15px}
+#pn button.it{border-radius:8px;background:rgba(255,255,255,.05)}
+.sw{border-radius:8px;background:rgba(255,255,255,.05)}
+
+#act{position:fixed;left:12px;bottom:calc(40px + var(--sb));z-index:16;display:flex;gap:8px}
+#act #don{position:static}
+#tg{text-decoration:none;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 13px 0 11px;border-radius:16px;background:#2aabee;color:#fff;font:600 13px var(--font);box-shadow:var(--sh)}
+#tg:hover{background:#4bb9f2}
+#tg svg{width:14px;height:14px;fill:#fff;stroke:none}
 </style></head><body>
 <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">Карта повітряних тривог України онлайн</h1>
 <div id="wrap"><svg id="tsvg" viewBox="7 66 1223 824" aria-hidden="true"></svg><svg id="map" viewBox="7 66 1223 824" role="img" aria-label="Карта України за областями"></svg><svg id="dmap" viewBox="7 66 1223 824" aria-hidden="true"></svg></div>
-<div id="bp"><div class="bpr"><div id="sbw"><span class="si"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><input id="sb" type="search" placeholder="Пошук міста, області або району…" autocomplete="off" aria-label="Пошук"><div id="sr"></div></div><button id="flt" aria-label="Показувати райони" title="Райони" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button><a id="don" href="https://send.monobank.ua/jar/3oyhPRGLBk" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>Підтримати</span></a><button id="mn" aria-label="Список тривог" title="Список тривог" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button></div><div class="bpr bpf"><a id="cr" href="https://neptun.in.ua/" target="_blank" rel="noopener">Дані: NEPTUN</a><span id="tat"></span><button id="ib" aria-label="Про карту" title="Про карту"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button></div></div>
-<div id="top"><div class="brand"><i></i><b>Карта тривог</b><span>онлайн</span></div><div id="ban" role="status" title="Натисніть, щоб закрити"></div><div id="chip"><span id="count"></span><span id="dinfo"></span><span id="dage"></span></div></div>
-<div class="zb"><div class="zx"><button id="zm" aria-label="Підкладка" title="Підкладка"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg></button><button id="shr" aria-label="Поділитися" title="Поділитися"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/></svg></button><button id="fs" aria-label="На весь екран" title="На весь екран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button><button id="zr" aria-label="Уся Україна" title="Уся Україна"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></button></div><button id="more" aria-label="Ще" title="Ще" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button><button id="zi" aria-label="Наблизити" title="Наблизити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button id="zo" aria-label="Віддалити" title="Віддалити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
+<div id="top"><div id="sbw"><span class="si"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><input id="sb" type="search" placeholder="Пошук міста, області або району…" autocomplete="off" aria-label="Пошук"><div id="sr"></div></div><div id="ban" role="status" title="Натисніть, щоб закрити"></div><div id="chip"><span id="count"></span><span id="dinfo"></span><span id="dage"></span></div></div>
+<div class="zb"><button id="mn" aria-label="Список тривог" title="Список" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><button id="zm" aria-label="Підкладка" title="Підкладка"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg></button><button id="shr" aria-label="Поділитися" title="Поділитися"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/></svg></button><button id="fs" aria-label="На весь екран" title="На весь екран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button><i class="gap"></i><button id="zi" aria-label="Наблизити" title="Наблизити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button id="zo" aria-label="Віддалити" title="Віддалити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><button id="zr" aria-label="Уся Україна" title="Уся Україна"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></button></div>
+<div id="act"><a id="don" href="https://send.monobank.ua/jar/3oyhPRGLBk" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>Підтримати</span></a><a id="tg" href="https://t.me/raiduamap" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.9 4.3 18.6 19.6c-.2 1-.9 1.3-1.7.8l-4.8-3.6-2.3 2.3c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.4 13.4 1.7 12c-1-.3-1-1 .2-1.5L20.2 3.4c.9-.3 1.7.2 1.7.9Z"/></svg><span>Telegram</span></a></div>
+<a id="cr" href="https://neptun.in.ua/" target="_blank" rel="noopener">Дані: Карта повітряних тривог — NEPTUN</a><span id="tat"></span>
+<button id="ib" aria-label="Про карту" title="Про карту"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button>
 <div id="cardw"><button id="cx" aria-label="Закрити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div id="card"></div></div>
-<aside id="pn" aria-label="Список тривог"><div class="ph"><span>Зараз на карті</span><button id="pcl" class="x" aria-label="Закрити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="pc"></div><label class="sw"><span>Показувати райони</span><input type="checkbox" id="rtoggle" checked></label></aside>
-<button id="ib" aria-label="Інформація">i</button><div id="info" role="dialog" aria-label="Про карту"><h4>Про карту</h4><p>Інформаційний агрегатор. Не замінює офіційні сигнали повітряної тривоги.</p><p>Дані: <a href="https://neptun.in.ua/" target="_blank" rel="noopener">Карта повітряних тривог — NEPTUN</a>.<br>Межі областей і районів: OCHA / HDX (CC BY-IGO).<br>Супутникова підкладка: Esri, Maxar, Earthstar Geographics.</p><div class="ia"><button id="dbgb">Діагностика</button><button id="dbgc">Копіювати</button></div></div><div id="toast"></div><div id="bgt" role="status" aria-live="polite"></div>
+<aside id="pn" aria-label="Список тривог"><div class="ph"><span>Зараз на карті</span><button id="pcl" class="x" aria-label="Закрити"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="pc"></div></aside>
+<div id="info" role="dialog" aria-label="Про карту"><h4>Про карту</h4><p>Інформаційний агрегатор. Не замінює офіційні сигнали повітряної тривоги.</p><p>Дані: <a href="https://neptun.in.ua/" target="_blank" rel="noopener">Карта повітряних тривог — NEPTUN</a>.<br>Межі областей і районів: OCHA / HDX (CC BY-IGO).<br>Супутникова підкладка: Esri, Maxar, Earthstar Geographics.</p><div class="ia"><button id="dbgb">Діагностика</button><div class="lg"><span><i style="background:#cf3a44"></i>офіційна повітряна тривога</span></div><button id="dbgc">Копіювати</button></div></div><div id="toast"></div><div id="bgt" role="status" aria-live="polite"></div>
 <noscript><p style="padding:10px">Для роботи карти потрібен JavaScript.</p></noscript>
 
 <script>
@@ -258,7 +365,7 @@ const P={
 };
 const ALERT=[]; // empty until connected to a real alert feed
 // ---- Threat types + dead-reckoning (replaces the NEPTUN SDK) ----
-const TYPES={uav:{shortLabel:"Шахед",hex:"#ffffff"},recon:{shortLabel:"Розвідник",hex:"#4dd0ff"},missile:{shortLabel:"Ракета",hex:"#ffb53d"},ballistic:{shortLabel:"Балістика",hex:"#ff4d5e"},kab:{shortLabel:"КАБ",hex:"#c084fc"},mig31k:{shortLabel:"МіГ-31К",hex:"#ff8a3d"},fpv:{shortLabel:"FPV",hex:"#7dd87d"},unknown:{shortLabel:"Невідомо",hex:"#9aa3b4"}};
+const TYPES={uav:{shortLabel:"Шахед",hex:"#ffffff"},recon:{shortLabel:"Розвідник",hex:"#4dd0ff"},missile:{shortLabel:"Ракета",hex:"#ffc24d"},ballistic:{shortLabel:"Балістика",hex:"#ff5d6c"},kab:{shortLabel:"КАБ",hex:"#c792ff"},mig31k:{shortLabel:"МіГ-31К",hex:"#ff8a3d"},fpv:{shortLabel:"FPV",hex:"#7dd87d"},unknown:{shortLabel:"Невідомо",hex:"#9aa3b4"}};
 // speed (km/h) assumed when the feed gives a heading but no velocity
 const DEF_SPD={uav:150,recon:120,missile:800,ballistic:1500,kab:500,mig31k:900,fpv:60,unknown:150};
 const courseOf=t=>t.velocity&&t.velocity.bearingDeg!=null?t.velocity.bearingDeg:(t.heading!=null?t.heading:null);
@@ -277,6 +384,9 @@ const svg=document.getElementById("map"),el=(t,a,p=svg)=>{const e=document.creat
 for(let la=44;la<=52;la+=2)el("line",{class:"grid",x1:0,x2:1230,y1:Y(la),y2:Y(la)});
 for(let lo=24;lo<=40;lo+=2)el("line",{class:"grid",y1:0,y2:1000,x1:X(lo),x2:X(lo)});
 let live=false,stamp="";const state={},paths={};let sel=null;
+// occupied oblasts (Luhansk, Crimea incl. Sevastopol) are never painted unless the user switches it on
+var RZ_OB=[],RZR=false,thrOb=new Map(),thrRz=new Map(),showNC=false,trackAll=false,occOn=false;
+const OCC=new Set(["Luhansk","Crimea"]),occHide=k=>OCC.has(k)&&!occOn;
 const SHORT={"Івано-Франківська":"Ів.-Франк.","Дніпропетровська":"Дніпро","Кіровоградська":"Кіровогр.","Хмельницька":"Хмельн.","Закарпатська":"Закарп.","Миколаївська":"Миколаїв.","Тернопільська":"Тернопіль.","Чернігівська":"Чернігів.","Житомирська":"Житомир.","Чернівецька":"Чернів."};
 for(const key in P){
   const [name,uk]=key.split("|"),{d,c}=P[key];
@@ -288,8 +398,8 @@ for(const key in P){
 }
 paths["Kyiv City"].parentNode.appendChild(paths["Kyiv City"]);
 const pl=(n,f)=>{const a=n%10,b=n%100;return b>10&&b<20?f[2]:a===1?f[0]:a>1&&a<5?f[1]:f[2]};
-function render(){setTimeout(watchMy);let n=0;for(const k in paths){const a=state[k];n+=a;paths[k].classList.toggle("alert",a);paths[k].classList.toggle("sel",k===sel)}
-  const rc=neptunLive?raionAlert.size:0,any=rc||n,stale=!neptunLive&&!!stamp&&ageMin(stamp)>15,
+function render(){setTimeout(watchMy);let n=0;for(const k in paths){const a=state[k];n+=a&&!occHide(k);paths[k].classList.toggle("sel",k===sel)}paintAll();
+  const rc=neptunLive?[...raionAlert].filter(i=>!occHide(RZ_OB[i])).length:0,any=rc||n,stale=!neptunLive&&!!stamp&&ageMin(stamp)>15,
     tail=neptunLive?stamp:(stamp?(via?"проксі · ":"")+(stale?"⚠ ЗАСТАРІЛО "+stamp.slice(5,16):stamp.slice(11,16)):"");
   document.getElementById("count").textContent=!live?"Джерело не підключено":(any?"Тривога: "+[rc?rc+" "+pl(rc,["район","райони","районів"]):"",n?n+" "+pl(n,["область","області","областей"]):""].filter(Boolean).join(", "):"Тривог немає")+(tail?" · "+tail:"");
   document.getElementById("chip").dataset.s=!live?"off":stale?"warn":any?"al":"ok"}
@@ -355,8 +465,8 @@ const rzEl=[],byKey=new Map(),byName=new Map(),byRaion=new Map();let raionAlert=
 const norm=s=>(s||"").toLowerCase().replace(/[’ʼ`]/g,"'").replace(/\s+(район|область)$/,"").replace(/^м\.\s*/,"").trim();
 RZ.forEach(([ru,ob,k,d],i)=>{rzEl.push(el("path",{d,class:"rz"},rg));
   byKey.set(k,i);byName.set(norm(ob)+"|"+norm(ru),i);byRaion.set(norm(ru),i)});
-document.getElementById("rtoggle").onchange=e=>rg.classList.toggle("hide",!e.target.checked);
 const obKey=ob=>ob==="Київ"?"Kyiv City":uaToKey(ob==="Автономна Республіка Крим"||ob==="Севастополь"?ob:ob+" область");
+RZ.forEach((r,i)=>{RZ_OB[i]=obKey(r[1])});RZR=true;
 function findRaion(a){
   if(a.key&&byKey.has(a.key))return byKey.get(a.key);
   const r=norm(a.name),o=norm(a.oblast);
@@ -371,48 +481,97 @@ function applyNeptunAlerts(R,O){
   for(const a of R||[]){const i=findRaion(a);if(i>=0)set.add(i);else miss.push(a.name||a.key)}
   for(const a of O||[]){const k=oblastOf(a);if(k&&paths[k])ok.push(k);else miss.push(a.name||a.key)}
   raionAlert=set;neptunLive=true;stamp=new Date().toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"});
-  rzEl.forEach((e,i)=>e.classList.toggle("alert",set.has(i)));
   window.setAlerts(ok);
   if(miss.length)console.warn("[alerts] не зіставлено:",miss)}
 async function pollNeptunAlerts(){if(document.hidden)return;
   try{const r=await fetch(NEPTUN_BASE+"/api/v1/alerts",{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);
     const j=await r.json();applyNeptunAlerts(j.raions,j.oblasts)}
   catch(e){console.warn("[alerts] NEPTUN недоступний:",e.message);
-    neptunLive=false;raionAlert=new Set();rzEl.forEach(x=>x.classList.remove("alert"));poll()}}
+    neptunLive=false;raionAlert=new Set();paintAll();poll()}}
 // ---- Threats (NEPTUN SDK) ----
 // Shahed (Geran-2) silhouette, nose up; drawn in a 600x612 box and scaled down
 const SHAHED="M271,190L271,90Q271,58 300,58Q329,58 329,90L329,190L271,190ZM271,188L329,188L530,440L530,508L70,508L70,440ZM62,425h8v103h-8ZM530,425h8v103h-8ZM276,508h50v22h-50ZM237,545Q237,537 249,537L351,537Q363,537 363,545Q363,553 351,553L249,553Q237,553 237,545Z";
-const SHAHED_TYPES=new Set(["uav"]); // types drawn as a white shahed; the rest stay coloured triangles
+const SHAHED_TYPES=new Set(["uav"]);
+// ---- icons (nose up, ~20x20 box) ----
+const D_MIS="M0,-9C1.5,-7.7 1.7,-5.2 1.7,-3.2L1.7,5.6L3.8,8.4L1.7,7.6L1.7,8.8L-1.7,8.8L-1.7,7.6L-3.8,8.4L-1.7,5.6L-1.7,-3.2C-1.7,-5.2 -1.5,-7.7 0,-9ZM1.7,-1.2L6.6,3.4L6.6,4.8L1.7,2.8ZM-1.7,-1.2L-6.6,3.4L-6.6,4.8L-1.7,2.8Z";   // cruise missile: slim body, mid wings, tail fins
+const D_BAL="M0,-10.5C1.7,-8.6 2.4,-6 2.4,-3.4L2.4,5.4L5.2,9L2.4,8.2L2.4,9.4L-2.4,9.4L-2.4,8.2L-5.2,9L-2.4,5.4L-2.4,-3.4C-2.4,-6 -1.7,-8.6 0,-10.5Z";   // ballistic: fat body + big fins
+const D_BALCAP="M0,-10.5C.9,-9.5 1.5,-8.3 1.9,-7L-1.9,-7C-1.5,-8.3 -.9,-9.5 0,-10.5Z";      // white warhead
+const D_BALFL="M-1.6,9.6Q0,15.5 1.6,9.6Z";                                              // exhaust flame
+const D_KAB="M0,-8.5C2.9,-8.1 3.4,-5.4 3.4,-2.2L3.4,3.8L2.3,4.8L2.3,6L-2.3,6L-2.3,4.8L-3.4,3.8L-3.4,-2.2C-3.4,-5.4 -2.9,-8.1 0,-8.5ZM3.4,-1.8L8.4,.8L8.4,2.4L3.4,1.8ZM-3.4,-1.8L-8.4,.8L-8.4,2.4L-3.4,1.8ZM2.3,6L6.4,9.2L6.4,10.2L2.3,8.6ZM-2.3,6L-6.4,9.2L-6.4,10.2L-2.3,8.6Z"; // guided bomb: bomb body + glide wings + tail fins
+const D_JET="M0,-10L1.3,-5.2L1.5,-1.6L9.4,3.6L9.4,5.4L1.6,3.4L1.4,7.2L3.9,9.2L3.9,10.2L0,9.5L-3.9,10.2L-3.9,9.2L-1.4,7.2L-1.6,3.4L-9.4,5.4L-9.4,3.6L-1.5,-1.6L-1.3,-5.2Z";   // MiG-31K
+const ICON_PATH={plane:"M0,-8.5C.9,-8.5 1.2,-7 1.2,-5L1.2,-.9L9.5,-.5L9.5,1L1.2,1.3L1.2,5L3.6,5.9L3.6,7.2L0,6.7L-3.6,7.2L-3.6,5.9L-1.2,5L-1.2,1.3L-9.5,1L-9.5,-.5L-1.2,-.9L-1.2,-5C-1.2,-7 -.9,-8.5 0,-8.5Z",tri:"M0,-7L4.5,5L0,2L-4.5,5Z"};
+const ICON_KEYS=["tri","sh","plane","quad","kab","missile","ball","jet"];
+const iconKey=(ty,m)=>{ty=ty||"";return SHAHED_TYPES.has(ty)?"sh":ty==="fpv"?"quad":ty==="recon"?"plane":(/kab|bomb|glide|guid/i.test(ty)||/каб/i.test((m&&m.shortLabel)||""))?"kab":ty==="ballistic"?"ball":ty==="missile"?"missile":ty==="mig31k"?"jet":"tri"};
+function chipIcon(ty,hex){const m=NEPTUN.getTypeMeta(ty),k=iconKey(ty,m),dk="#0f1319",st='stroke="'+dk+'" stroke-width="1.1" stroke-linejoin="round"',f='fill="'+hex+'"';let b;
+  switch(k){
+    case"sh":b='<path d="'+SHAHED+'" transform="scale(.04) translate(-300,-310)" fill="#fff" stroke="'+dk+'" stroke-width="40" paint-order="stroke" stroke-linejoin="round"/>';break;
+    case"quad":b='<path d="M-4.5,-4.5L4.5,4.5M4.5,-4.5L-4.5,4.5" fill="none" stroke="'+dk+'" stroke-width="3.4" stroke-linecap="round"/><path d="M-4.5,-4.5L4.5,4.5M4.5,-4.5L-4.5,4.5" fill="none" stroke="'+hex+'" stroke-width="1.5" stroke-linecap="round"/>'+[[-4.5,-4.5],[4.5,-4.5],[-4.5,4.5],[4.5,4.5]].map(q=>'<circle cx="'+q[0]+'" cy="'+q[1]+'" r="2.6" fill="'+dk+'" stroke="'+hex+'" stroke-width="1.2"/>').join("");break;
+    case"plane":b='<path d="'+ICON_PATH.plane+'" '+f+' '+st+'/>';break;
+    case"missile":b='<path d="'+D_MIS+'" '+f+' '+st+'/>';break;
+    case"ball":b='<path d="'+D_BALFL+'" fill="#ffd166" '+st+'/><path d="'+D_BAL+'" '+f+' '+st+'/><path d="'+D_BALCAP+'" fill="#fff" '+st+'/>';break;
+    case"kab":b='<path d="'+D_KAB+'" '+f+' '+st+'/><path d="M-3.4,-.2H3.4" stroke="'+dk+'" stroke-width="1.1"/>';break;
+    case"jet":b='<path d="'+D_JET+'" '+f+' '+st+'/>';break;
+    default:b='<path d="'+ICON_PATH.tri+'" '+f+' '+st+'/>'}
+  return '<svg viewBox="-11 -12 22 27" width="19" height="23" aria-hidden="true">'+b+'</svg>'}
+// ---- duplicates ("clones"): same kind, within 3.5 km, similar course -> keep the freshest / best-sourced track ----
+const angDiff=(a,b)=>{const d=Math.abs(a-b)%360;return d>180?360-d:d};
+const ncOk=t=>!t.areaOnly&&(t.status||"active")==="active"&&t.confidenceLevel!=="low"&&fresh(t)&&!t.advisory;
+function dedupe(list){const now=NOW(),sc=t=>(tmo(t)||0)+(t.sourceCount||0)*5000+(t.count||0)*100+(courseOf(t)!=null?1:0);
+  const arr=list.map(t=>({t,p:NEPTUN.predict(t,now),c:courseOf(t)})).sort((a,b)=>sc(b.t)-sc(a.t)),out=[];
+  for(const a of arr){let dup=false;
+    for(const b of out){const ta=a.t.type,tb=b.t.type;if(ta!==tb&&ta!=="unknown"&&tb!=="unknown")continue;
+      if(hav(a.p,b.p)>3.5)continue;if(a.c!=null&&b.c!=null&&angDiff(a.c,b.c)>35)continue;dup=true;break}
+    if(!dup)out.push(a)}
+  return out.map(o=>o.t)} // types drawn as a white shahed; the rest stay coloured triangles
 const markers=new Map(); // threat id -> {g,path,t}
 const okCoord=t=>Number.isFinite(t.lat)&&Number.isFinite(t.lon);
+const LEVEL={uav:1,recon:1,fpv:1,unknown:1,missile:2,ballistic:2,kab:2,mig31k:2};
+// One level per region: 3 official alert (red) > 2 missile/ballistic/KAB/MiG-31K (orange) > 1 shahed/recon (yellow).
+// Painted on raion polygons only where they beat the oblast level -> no double blending, same colour everywhere.
+const setL=(e,l)=>{const c=e.getAttribute("data-l");if(l){if(c!=l)e.setAttribute("data-l",l)}else if(c!==null)e.removeAttribute("data-l")};
+function paintAll(){if(!RZR)return;const lo={};
+  for(const k in paths){const l=occHide(k)?0:Math.max(state[k]?3:0,thrOb.get(k)||0);lo[k]=l;setL(paths[k],l)}
+  rzEl.forEach((e,i)=>{const ok=RZ_OB[i];let l=0;
+    if(!occHide(ok)){l=Math.max(neptunLive&&raionAlert.has(i)?3:0,thrRz.get(i)||0);if(l<=(lo[ok]||0))l=0}
+    setL(e,l)})}
+function applyThreatLevels(items){
+  const ob=new Map(),rz=new Map();
+  for(const t of items){if(t.status==="resolved"||!fresh(t))continue;
+    let lv=LEVEL[t.type]||1;if(t.advisory)lv=Math.min(lv,1);            // "advisory" = calm, never red
+    const reg=t.region||"",i=t.district&&!t.areaOnly?findRaion({name:String(t.district).replace(/ район$/i,""),oblast:reg}):-1;
+    if(i>=0){if((rz.get(i)||0)<lv)rz.set(i,lv)}                          // known district -> colour only that raion
+    else{const o=oblastOf({name:reg,oblast:reg});if(o&&(ob.get(o)||0)<lv)ob.set(o,lv)}}  // region only -> whole oblast
+  paintAll()}   // threat levels (yellow/orange) are no longer painted: only official alerts colour the map
 function onSnap(snap){
   try{lastAny=Date.now();
-    const all=(snap.threats||[]).filter(okCoord),act=all.filter(t=>t.status!=="resolved"),list=act.filter(drawable),area=act.filter(t=>!drawable(t)&&!t.advisory&&t.status!=="stale"&&fresh(t)),seen=new Set(),counts={};
+    const all=(snap.threats||[]).filter(okCoord),act=all.filter(t=>t.status!=="resolved"),list=dedupe(act.filter(t=>drawable(t)||(showNC&&ncOk(t)))),area=act.filter(t=>!drawable(t)&&!t.advisory&&t.status!=="stale"&&fresh(t)),seen=new Set(),counts={};
+    applyThreatLevels(act);
     list.forEach((t,i)=>{
       const id=t.id!=null?t.id:"i"+i,m=NEPTUN.getTypeMeta(t.type);seen.add(id);
       let mk=markers.get(id);
-      if(!mk){const g=el("g",{},dLayer),dk="#0f1319",
-          tri=el("path",{d:"M0,-7L4.5,5L0,2L-4.5,5Z",stroke:dk,"stroke-width":1.3,"stroke-linejoin":"round"},g),
+      if(!mk){const g=el("g",{},dLayer),dk="#0f1319",ps=(par,d,fill)=>el("path",Object.assign({d,stroke:dk,"stroke-width":1,"stroke-linejoin":"round"},fill?{fill}:{}),par),
+          ring=el("circle",{r:11,fill:"none",stroke:"#fff","stroke-width":1,"stroke-dasharray":"2.5 2.5",opacity:.75},g),
+          tri=ps(g,ICON_PATH.tri),
           sh=el("path",{d:SHAHED,transform:"scale(.04) translate(-300,-310)",fill:"#fff",stroke:dk,"stroke-width":40,"stroke-linejoin":"round","paint-order":"stroke"},g),
-          plane=el("path",{d:"M0,-8.5C.9,-8.5 1.2,-7 1.2,-5L1.2,-.9L9.5,-.5L9.5,1L1.2,1.3L1.2,5L3.6,5.9L3.6,7.2L0,6.7L-3.6,7.2L-3.6,5.9L-1.2,5L-1.2,1.3L-9.5,1L-9.5,-.5L-1.2,-.9L-1.2,-5C-1.2,-7 -.9,-8.5 0,-8.5Z",stroke:dk,"stroke-width":1,"stroke-linejoin":"round"},g),
-          kab=el("path",{d:"M0,-8.5C2.4,-7.6 2.9,-5 2.9,-2.5L2.9,2.8L5,6.6L2.3,5.9L2.3,8L-2.3,8L-2.3,5.9L-5,6.6L-2.9,2.8L-2.9,-2.5C-2.9,-5 -2.4,-7.6 0,-8.5Z",stroke:dk,"stroke-width":1,"stroke-linejoin":"round"},g),
+          plane=ps(g,ICON_PATH.plane),
+          kab=el("g",{},g),kabB=ps(kab,D_KAB),missile=el("g",{},g),misB=ps(missile,D_MIS),
+          ball=el("g",{},g),balFl=ps(ball,D_BALFL,"#ffd166"),balB=ps(ball,D_BAL),balC=ps(ball,D_BALCAP,"#fff"),
+          jet=el("g",{},g),jetB=ps(jet,D_JET),
           quad=el("g",{},g);
+        el("path",{d:"M-3.4,-.2H3.4",stroke:dk,"stroke-width":1.1},kab);
         el("path",{d:"M-4.5,-4.5L4.5,4.5M4.5,-4.5L-4.5,4.5",stroke:dk,"stroke-width":3.4,"stroke-linecap":"round"},quad);
         const arms=el("path",{d:"M-4.5,-4.5L4.5,4.5M4.5,-4.5L-4.5,4.5",fill:"none","stroke-width":1.5,"stroke-linecap":"round"},quad),
           rot=[[-4.5,-4.5],[4.5,-4.5],[-4.5,4.5],[4.5,4.5]].map(([x,y])=>el("circle",{cx:x,cy:y,r:2.6,fill:dk,"stroke-width":1.2},quad));
-        el("circle",{r:14,fill:"transparent",class:"hit"},g);g.addEventListener("click",e=>{e.stopPropagation();follow(id)});mk={g,tri,sh,plane,kab,quad,arms,rot,hist:[],ln:el("path",{class:"cl"},tLayer),tr:el("polyline",{class:"tr"},tLayer)};markers.set(id,mk)}
-      mk.t=t;noteObs(t);mk.g.style.opacity=(t.status==="stale"||t.advisory)?.45:1;{const hx=X(t.lon),hy=Y(t.lat),h=mk.hist,l=h[h.length-1];if(!l||Math.hypot(l[0]-hx,l[1]-hy)>1.5){h.push([hx,hy]);if(h.length>12)h.shift()}mk.ln.setAttribute("stroke",m.hex);mk.tr.setAttribute("stroke",m.hex)}const isKab=/kab|bomb|glide|guid/i.test(m.type||t.type||"")||/каб/i.test(m.shortLabel||""),ik=SHAHED_TYPES.has(m.type)?"sh":m.type==="fpv"?"quad":m.type==="recon"?"plane":isKab?"kab":"tri";
-      for(const k of["tri","sh","plane","quad","kab"])mk[k].style.display=k===ik?"":"none";
-      mk.tri.setAttribute("fill",m.hex);mk.kab.setAttribute("fill",m.hex);mk.plane.setAttribute("fill",m.hex);mk.arms.setAttribute("stroke",m.hex);mk.rot.forEach(c=>c.setAttribute("stroke",m.hex));
+        el("circle",{r:14,fill:"transparent",class:"hit"},g);g.addEventListener("click",e=>{e.stopPropagation();follow(id)});
+        mk={g,ring,tri,sh,plane,kab,missile,ball,jet,quad,arms,rot,fills:[tri,plane,kabB,misB,balB,jetB],hist:[],ln:el("path",{class:"cl"},tLayer),tr:el("polyline",{class:"tr"},tLayer)};markers.set(id,mk)}
+      mk.t=t;noteObs(t);mk.g.style.opacity=(t.status==="stale"||t.advisory)?.45:1;{const hx=X(t.lon),hy=Y(t.lat),h=mk.hist,l=h[h.length-1];if(!l||Math.hypot(l[0]-hx,l[1]-hy)>1.5){h.push([hx,hy]);if(h.length>12)h.shift()}mk.ln.setAttribute("stroke",m.hex);mk.tr.setAttribute("stroke",m.hex)}const ik=iconKey(m.type||t.type,m);for(const k of ICON_KEYS)mk[k].style.display=k===ik?"":"none";mk.ring.style.display=courseOf(t)==null?"":"none";mk.fills.forEach(e=>e.setAttribute("fill",m.hex));mk.arms.setAttribute("stroke",m.hex);mk.rot.forEach(c=>c.setAttribute("stroke",m.hex));
       (counts[m.type]||(counts[m.type]={m,n:0})).n+=t.count>0?t.count:1});
     for(const [id,mk] of markers)if(!seen.has(id)){mk.g.remove();mk.ln.remove();mk.tr.remove();markers.delete(id)}
     dinfo.replaceChildren();
-    for(const k in counts){const {m,n}=counts[k],s=document.createElement("span"),i=document.createElement("i");
-      const kb=/kab|bomb|glide|guid/i.test(m.type||"")||/каб/i.test(m.shortLabel||""),cp=m.type==="recon"?"polygon(45% 0,55% 0,55% 38%,100% 44%,100% 58%,55% 60%,55% 84%,78% 90%,78% 100%,22% 100%,22% 90%,45% 84%,45% 60%,0 58%,0 44%,45% 38%)":kb?"polygon(50% 0,80% 14%,80% 68%,100% 100%,0 100%,20% 68%,20% 14%)":"polygon(50% 0,100% 100%,0 100%)";
-      i.style.cssText="background:"+(SHAHED_TYPES.has(m.type)?"#fff":m.hex)+";clip-path:"+cp;
-      s.className="tc";const nb=document.createElement("b");nb.textContent=n;const lb=document.createElement("small");lb.textContent=m.shortLabel;s.append(i,nb,lb);dinfo.append(s)}
+    for(const k in counts){const {m,n}=counts[k],s=document.createElement("span");s.className="tc";s.innerHTML=chipIcon(k,m.hex);const nb=document.createElement("b");nb.textContent=n;const lb=document.createElement("small");lb.textContent=m.shortLabel;s.append(nb,lb);dinfo.append(s)}
     if(!list.length){const s=document.createElement("span");s.className="tc";s.textContent="Активних загроз немає";dinfo.append(s)}
-    if(area.length){const s=document.createElement("span");s.className="tc warn";s.textContent="ще "+area.reduce((a,t)=>a+(t.count>0?t.count:1),0)+" без курсу";s.title=area.map(t=>(t.title||"загроза")+" — "+(t.region||"?")).join("\n");dinfo.append(s)}
+    if(area.length){const s=document.createElement("button");s.type="button";s.dataset.a="nc";s.className="tc warn btn"+(showNC?" on":"");s.textContent="ще "+area.reduce((a,t)=>a+(t.count>0?t.count:1),0)+" без курсу";s.title=area.map(t=>(t.title||"загроза")+" — "+(t.region||"?")).join("\n")+"\n(натисніть, щоб показати/сховати на карті)";dinfo.append(s)}
+    if(list.length){const s=document.createElement("button");s.type="button";s.dataset.a="all";s.className="tc btn"+(trackAll?" on":"");s.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg><span>Усі цілі</span>';dinfo.append(s)}
     frame()
   }catch(e){console.error("[threats]",e)}}
 function frame(){const now=NOW();
@@ -421,7 +580,8 @@ function frame(){const now=NOW();
     const f=P_(mk.t,now+90000);
     mk.ln.setAttribute("d","M"+x+" "+y+"L"+X(f.lon).toFixed(6)+" "+Y(f.lat).toFixed(6));
     mk.tr.setAttribute("points",mk.hist.map(q=>q[0].toFixed(6)+","+q[1].toFixed(6)).join(" ")+" "+x+","+y)}
-  if(fol!=null&&!flying){const mk=markers.get(fol);if(mk){const p=P_(mk.t,now);V.x+=(X(p.lon)-V.w/2-V.x)*.25;V.y+=(Y(p.lat)-V.h/2-V.y)*.25;sched()}}}
+  if(fol!=null&&!flying){const mk=markers.get(fol);if(mk){const p=P_(mk.t,now);V.x+=(X(p.lon)-V.w/2-V.x)*.25;V.y+=(Y(p.lat)-V.h/2-V.y)*.25;sched()}}
+  else if(trackAll&&!flying){const b=allBox(now);if(b){V.x+=(b.x-V.x)*.12;V.y+=(b.y-V.y)*.12;V.w+=(b.w-V.w)*.12;V.h=V.w*AR;sched()}}}
 let lt=0;function loop(ts){if(ts-lt>=(LITE?66:33)){lt=ts;try{frame()}catch(e){console.warn("[frame]",e)}}requestAnimationFrame(loop)}
 
 // ---- Zoom / pan (rAF-batched, no drift) ----
@@ -439,7 +599,7 @@ function applyV(){raf=0;const s=V.x.toFixed(8)+" "+V.y.toFixed(8)+" "+V.w.toFixe
   if(zk!==lastZk){lastZk=zk; // CSS variables / classes only when the zoom really changed (not on pure pan)
     wrap.classList.toggle("zfar",z<2.2);
     wrap.style.setProperty("--ls",Math.pow(z,-.95).toFixed(8));wrap.style.setProperty("--af",Math.max(.2,.55-Math.log2(Math.max(1,z))*.06).toFixed(2));wrap.style.setProperty("--px",(V.w/pw).toFixed(5));
-    MS=(11+Math.min(9,Math.log2(z)*1.2))*V.w/(14*pw)}
+    MS=(15+Math.min(9,Math.log2(z)*1.2))*V.w/(14*pw)}
   const bk=(z<2.2?0:1)+(z<5?0:2);if(bk!==cbk){cbk=bk;cg.querySelectorAll("[data-r]").forEach(e=>{const r=e.dataset.r;e.style.display=(r==="2"&&!(bk&1))||(r==="n"&&bk>1)?"none":""})}
   if(tmode&&!tt)tt=setTimeout(()=>{tt=0;updateTiles()},120)}
 const sched=()=>{if(!raf)raf=requestAnimationFrame(applyV)};
@@ -448,7 +608,7 @@ function xform(f,c0,c1){const r=svg.getBoundingClientRect(),nw=Math.min(B.w*2.4,
   const ux=V.x+(c0[0]-r.left)/r.width*V.w,uy=V.y+(c0[1]-r.top)/r.height*V.h;
   V.w=nw;V.h=nw*AR;V.x=ux-(c1[0]-r.left)/r.width*V.w;V.y=uy-(c1[1]-r.top)/r.height*V.h;
   {const cx=Math.min(B.x+B.w*1.5,Math.max(B.x-B.w*.5,V.x+V.w/2)),cy=Math.min(B.y+B.h*1.5,Math.max(B.y-B.h*.5,V.y+V.h/2));V.x=cx-V.w/2;V.y=cy-V.h/2}
-  moving();sched()}
+  if(trackAll)setTrack(false);moving();sched()}
 function flyTo(T){cancelAnimationFrame(anim);flying=true;const S={...V},t0=performance.now();
   (function st(n){const k=Math.min(1,(n-t0)/450),e=1-Math.pow(1-k,3);for(const q of["x","y","w","h"])V[q]=S[q]+(T[q]-S[q])*e;moving();applyV();if(k<1)anim=requestAnimationFrame(st);else flying=false})(t0)}
 window.zoomTo=n=>{const b=paths[n].getBBox(),p=40,W=Math.max(b.width+2*p,(b.height+2*p)/AR,B.w/60),H=W*AR;
@@ -519,35 +679,43 @@ const P_=(t,n)=>{let p=null;try{p=NEPTUN.predict(t,n)}catch(e){}
 let lastRest=0,restErr="",lastAny=0,lastSdk=0,lastWs=0,lastTs=0,off=0,pend=0,ws=null,wsT=0,wsD=1000;
 const NOW=()=>Date.now()+off;const SRC="rest";let sdkClient=null,lastRetry=0;const thr=new Map(),tmo=t=>Date.parse(t&&t.updatedAt)||0;
 function emit(){if(!pend)pend=setTimeout(()=>{pend=0;onSnap({threats:[...thr.values()].map(v=>v.t)})},120)}
-function setAll(list,hard){const ids=new Set();for(const t of list){if(t.id==null)continue;ids.add(t.id);const c=thr.get(t.id);if(!c||tmo(t)>tmo(c.t)||(tmo(t)===tmo(c.t)&&(t.velocity||!c.t.velocity)))thr.set(t.id,{t,w:c?c.w:0})}
-  for(const [id,v] of thr)if(!ids.has(id)&&(hard||Date.now()-v.w>20000))thr.delete(id);emit()}
+const dead=new Map();   // id -> server time it was removed; late/stale frames must not resurrect it
+const isDead=t=>{const r=dead.get(t.id);return r!=null&&NOW()-r<90000&&tmo(t)<=r+1500};
+function setAll(list,hard){const ids=new Set();for(const t of list){if(t.id==null)continue;ids.add(t.id);if(isDead(t))continue;const c=thr.get(t.id);if(!c||tmo(t)>tmo(c.t)||(tmo(t)===tmo(c.t)&&(t.velocity||!c.t.velocity)))thr.set(t.id,{t,w:c?c.w:0})}
+  for(const [id,v] of thr)if(!ids.has(id)&&(hard||Date.now()-v.w>20000)){thr.delete(id);dead.set(id,NOW())}emit()}
 function openWs(){try{ws=new WebSocket("wss://neptun.in.ua/api/v1/stream")}catch(e){return}
   ws.onopen=()=>{wsD=1000};
   ws.onmessage=e=>{let v;try{v=JSON.parse(e.data)}catch(_){return}lastWs=Date.now();
     if(v.ts!=null){const s=typeof v.ts==="number"?(v.ts<1e12?v.ts*1000:v.ts):Date.parse(v.ts);if(Number.isFinite(s)){const d=s-Date.now();if(Math.abs(d)<600000){off=off*.7+d*.3;lastTs=Date.now()}}}
     const d=v.data;
     if(v.type==="snapshot"&&d&&Array.isArray(d.threats))setAll(d.threats,true);
-    else if(v.type==="upsert"&&d&&d.id!=null){thr.set(d.id,{t:d,w:Date.now()});emit()}
-    else if(v.type==="remove"&&d){thr.delete(d.id);emit()}
+    else if(v.type==="upsert"&&d&&d.id!=null){if(isDead(d))return;const c=thr.get(d.id);if(c&&tmo(d)<tmo(c.t))return;thr.set(d.id,{t:d,w:Date.now()});emit()}
+    else if(v.type==="remove"&&d){thr.delete(d.id);dead.set(d.id,NOW());emit()}
     else if(v.type==="alerts"&&d)applyNeptunAlerts(d.raions||[],d.oblasts||[])};
   ws.onclose=()=>{clearTimeout(wsT);wsT=setTimeout(openWs,wsD=Math.min(wsD*2,30000))};ws.onerror=()=>{try{ws.close()}catch(_){}}}
 function hub(){openWs();document.addEventListener("visibilitychange",()=>{if(!document.hidden&&(!ws||ws.readyState>1)){clearTimeout(wsT);openWs()}})}
-async function pollThreats(){if(document.hidden)return;
+async function pollThreats(){if(document.hidden)return;if(Date.now()-lastWs<25000&&Date.now()-lastRest<30000)return;   // WebSocket alive -> REST only every 30 s
   try{const r=await fetch("https://neptun.in.ua/api/v1/threats",{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();
     if(j.serverTime){const d=Date.parse(j.serverTime)-Date.now();if(Math.abs(d)<600000)off=d}
-    lastRest=Date.now();restErr="";setAll(j.threats||[],true)}
+    lastRest=Date.now();restErr="";setAll(j.threats||[],Date.now()-lastWs>=25000)}
   catch(e){restErr=e.message||"помилка"}}
-setInterval(()=>{const e_=document.getElementById("dage"),s=lastRest?Math.round((Date.now()-lastRest)/1000):null;
+setInterval(()=>{const e_=document.getElementById("dage"),now=Date.now(),wsOk=lastWs&&now-lastWs<45000,last=Math.max(lastWs,lastRest),s=last?Math.round((now-last)/1000):null;
+  if(lastWs&&now-lastWs>45000&&ws&&ws.readyState===1){try{ws.close()}catch(_){}}   // half-open socket -> reconnect
   if(s===null){e_.style.color="";e_.textContent=restErr?"⚠ Немає зв'язку: "+restErr:"Підключення…";return}
-  e_.style.color=s>20?"#ffb53d":"";e_.textContent=s>20?"⚠ Дані застарілі ("+s+" с)":"Оновлено "+s+" с тому"},1000);
+  e_.style.color=s>45?"#ffb53d":"";e_.textContent=s>45?"⚠ Дані застарілі ("+s+" с)":wsOk?"WebSocket · кадр "+Math.round((now-lastWs)/1000)+" с тому":"REST · оновлено "+s+" с тому"},1000);
 // ---- Follow a target (tap a marker) ----
 const hav=(a,b)=>{const r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lon-a.lon)*r,h=Math.sin(dl/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+function allBox(now){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,n=0;
+  for(const mk of markers.values()){const p=P_(mk.t,now),x=X(p.lon),y=Y(p.lat);if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;n++}
+  if(!n)return null;const pad=Math.max(25,(x1-x0)*.14,(y1-y0)*.14);x0-=pad;x1+=pad;y0-=pad;y1+=pad;
+  const W=Math.max(x1-x0,(y1-y0)/AR,B.w/60),H=W*AR,cx=(x0+x1)/2,cy=(y0+y1)/2;return{x:cx-W/2,y:cy-H/2,w:W,h:H}}
+function setTrack(on){if(trackAll===on)return;if(on){if(!allBox(NOW())){toast("Немає цілей для відстеження");return}endFol()}trackAll=on;emit()}
 function endFol(){fol=null;clearInterval(folT);const c=document.getElementById("card");if(c.textContent.includes("стежимо"))c.innerHTML=""}
 window.stopFol=()=>endFol();
 function showFol(){const mk=markers.get(fol);if(!mk){endFol();return}const n=NOW(),a=P_(mk.t,n),b=P_(mk.t,n+10000),v=hav(a,b)*360;
   const m=NEPTUN.getTypeMeta(mk.t.type);
   document.getElementById("card").innerHTML=`<div class="fl" title="${tdetail(mk.t)}"><b>${m.shortLabel||"Ціль"}</b><small>стежимо</small><span>${v>5?Math.round(v)+" км/год · "+Math.round(a.heading||0)+"°":"майже не рухається"}</span><button onclick="stopFol()">Не стежити</button></div>`}
-window.follow=id=>{const mk=markers.get(id);if(!mk)return;fol=id;const p=P_(mk.t,NOW()),w=Math.min(V.w,B.w/250),h=w*AR;
+window.follow=id=>{const mk=markers.get(id);if(!mk)return;fol=id;if(trackAll){trackAll=false;emit()}const p=P_(mk.t,NOW()),w=Math.min(V.w,B.w/250),h=w*AR;
   flyTo({x:X(p.lon)-w/2,y:Y(p.lat)-h/2,w,h});showFol();clearInterval(folT);folT=setInterval(showFol,1000)};
 
 // ---- NEPTUN-style UI: cities, search, side list, toolbar ----
@@ -572,19 +740,23 @@ $("sr").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)re
   if(s[1]==="o"){zoomTo(s[2]);pick(s[2])}else if(s[1]==="r"){const bb=rzEl[s[2]].getBBox(),W=Math.max(bb.width*2.2,bb.height*2.2/AR,B.w/200),H=W*AR;flyTo({x:bb.x+bb.width/2-W/2,y:bb.y+bb.height/2-H/2,w:W,h:H})}else{flyPt(s[2][1],s[2][2],B.w/45);try{history.replaceState(null,"","?c="+encodeURIComponent(s[2][0]))}catch(_){}}});
 // side list
 let pnT=0;
-function buildPanel(){const al=Object.keys(paths).filter(n=>isAl(n)),ids=[...markers.keys()];
+let MSGS=[],msgAt=0,msgBusy=false;
+const escM=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function msgTick(){if(msgBusy||Date.now()-msgAt<30000)return;msgBusy=true;msgAt=Date.now();
+  try{const r=await fetch(NEPTUN_BASE+"/api/v1/messages",{cache:"no-store"});if(r.ok){const j=await r.json();MSGS=(Array.isArray(j.messages)?j.messages:[]).slice(0,15)}}catch(e){}msgBusy=false}
+function msgHtml(){return MSGS.map(m=>{const d=new Date(m.date),tm=isNaN(d)?"":d.toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"}),tx=String(m.text||"");
+  return`<div class="msg"><b>${escM(m.channel||"")}</b><time>${tm}</time><div>${escM(tx.length>240?tx.slice(0,240)+"…":tx)}</div></div>`}).join("")||"<div class='emp'>Немає даних</div>"}
+function buildPanel(){msgTick();const al=Object.keys(paths).filter(n=>isAl(n)&&!occHide(n)),ids=[...markers.keys()];
   $("pc").innerHTML=`<h3>Тривога в областях <em>${al.length}</em></h3>`+(al.map(n=>`<button class="it" data-o="${n}"><i class="dot"></i>${fullName(n)}</button>`).join("")||"<div class='emp'>Немає</div>")
    +(neptunLive?`<h3>Районів у тривозі <em>${raionAlert.size}</em></h3>`:"")+`<h3>Цілі на карті <em>${ids.length}</em></h3>`
-   +(ids.map((id,i)=>{const t=markers.get(id).t,m=NEPTUN.getTypeMeta(t.type);return`<button class="it" data-m="${i}"><i class="dot" style="background:${m.hex}"></i>${m.shortLabel||t.type}${t.region?" · "+t.region:t.title?" · "+t.title:""}</button>`}).join("")||"<div class='emp'>Немає</div>");
+   +(ids.map((id,i)=>{const t=markers.get(id).t,m=NEPTUN.getTypeMeta(t.type);return`<button class="it" data-m="${i}"><i class="dot" style="background:${m.hex}"></i>${m.shortLabel||t.type}${t.region?" · "+t.region:t.title?" · "+t.title:""}</button>`}).join("")||"<div class='emp'>Немає</div>")
+   +`<h3>Повідомлення з каналів <em>${MSGS.length}</em></h3>`+msgHtml();
   $("pc")._ids=ids}
 $("pc").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;setPn(false);
   if(b.dataset.o){zoomTo(b.dataset.o);pick(b.dataset.o)}else follow($("pc")._ids[+b.dataset.m])});
 function setPn(on){$("pn").classList.toggle("on",on);$("mn").setAttribute("aria-expanded",on);clearInterval(pnT);if(on){buildPanel();pnT=setInterval(buildPanel,3000)}}
 $("mn").onclick=()=>setPn(!$("pn").classList.contains("on"));$("pcl").onclick=()=>setPn(false);
 wrap.addEventListener("click",()=>{setPn(false);$("info").classList.remove("on")});
-$("flt").onclick=()=>{const c=$("rtoggle");c.checked=!c.checked;c.dispatchEvent(new Event("change"))};
-$("rtoggle").addEventListener("change",()=>$("flt").setAttribute("aria-pressed",$("rtoggle").checked));
-{const zb=document.querySelector(".zb");$("more").onclick=()=>{const o=zb.classList.toggle("open");$("more").setAttribute("aria-expanded",o)};wrap.addEventListener("click",()=>{zb.classList.remove("open");$("more").setAttribute("aria-expanded",false)})}
 addEventListener("keydown",e=>{if(e.key==="Escape"){setPn(false);$("info").classList.remove("on");if($("cardw").classList.contains("on"))$("cx").click()}});
 // toolbar
 $("shr").onclick=async()=>{const u=location.href;try{if(navigator.share)await navigator.share({title:document.title,url:u});else{await navigator.clipboard.writeText(u);toast("Посилання скопійовано")}}catch(_){}};
@@ -615,8 +787,13 @@ const _pick=pick;pick=n=>{_pick(n);try{history.replaceState(null,"","?o="+encode
   else if(c){const k=CITIES.find(x=>x[0]===c);if(k)setTimeout(()=>flyPt(k[1],k[2],B.w/45),700)}}
 $("ib").onclick=()=>$("info").classList.toggle("on");
 setMode(tmode);applyV();
-dinfo.textContent="Підключення…";pollThreats();setInterval(pollThreats,5000);
+dinfo.textContent="Підключення…";if(new URLSearchParams(location.search).get("src")!=="rest")hub();   // ?src=rest forces REST-only
+pollThreats();setInterval(pollThreats,5000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)pollThreats()});
 loop();
 render();pollNeptunAlerts();setInterval(pollNeptunAlerts,10000);setInterval(poll,POLL_MS);
+
+// ---- occupied territories switch, chip buttons, tombstone cleanup ----
+dinfo.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;if(b.dataset.a==="nc"){showNC=!showNC;emit()}else if(b.dataset.a==="all")setTrack(!trackAll)});
+setInterval(()=>{const t=NOW();for(const [k,v] of dead)if(t-v>120000)dead.delete(k)},60000);
 </script></body></html>
